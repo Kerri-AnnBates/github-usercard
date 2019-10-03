@@ -24,7 +24,13 @@
           user, and adding that card to the DOM.
 */
 
-const followersArray = [];
+const followersArray = ['tetondan', 'dustinmyers', 'justsml', 'luishrd', 'bigknell'];
+const cardEntry = document.querySelector('.cards');
+followersArray.forEach(user => {
+  axios.get(`https://api.github.com/users/${user}`).then((response) => {
+    cardEntry.appendChild(createGitHubCard(response.data));
+  });
+});
 
 /* Step 3: Create a function that accepts a single object as its only argument,
           Using DOM methods and properties, create a component that will return the following DOM element:
@@ -56,9 +62,13 @@ const followersArray = [];
 
 
 axios.get('https://api.github.com/users/Kerri-AnnBates').then((response) => {
-  console.log(response);
+  console.log(response.data);
+
+  const cardEntry = document.querySelector('.cards');
+  cardEntry.appendChild(createGitHubCard(response.data));
+
 }).catch((err) => {
-  console.log(err);
+  console.log('The data was not found', err);
 });
 
 function createGitHubCard(data) {
@@ -68,7 +78,6 @@ function createGitHubCard(data) {
   username = document.createElement('p'),
   location = document.createElement('p'),
   profile = document.createElement('p'),
-  githubAnchor = document.createElement('a'),
   followers = document.createElement('p'),
   following = document.createElement('p'),
   bio = document.createElement('p'),
@@ -77,9 +86,15 @@ function createGitHubCard(data) {
   // Set up classes
   cardDiv.classList.add('card');
   infoDiv.classList.add('card-info');
-  nameTitle = classList.add('name');
-  username = classList.add('username');
+  nameTitle.classList.add('name');
+  username.classList.add('username');
 
+  const githubAnchor = document.createElement('a');
+  githubAnchor.href = data.url;
+  githubAnchor.textContent = data.url;
+  profile.textContent = `Profile: `;
+  profile.appendChild(githubAnchor);
+  
   // Create structure
   cardDiv.appendChild(userImage);
   cardDiv.appendChild(infoDiv);
@@ -90,18 +105,19 @@ function createGitHubCard(data) {
   infoDiv.appendChild(followers);
   infoDiv.appendChild(following);
   infoDiv.appendChild(bio);
-  profile.appendChild(githubAnchor);
+  
 
   // Set up content
   userImage.src = data.avatar_url;
   nameTitle.textContent = data.name;
   username.textContent = data.login;
-  location.textContent = data.location;
-  githubAnchor.href = data.url;
-  githubAnchor.textContent = data.url;
-  following.textContent = data.followers;
-  following.textContent = data.following;
+  location.textContent = `Location: ${data.location}`;
+  
+  following.textContent = `Followers: ${data.followers}`;
+  following.textContent = `Following: ${data.following}`;
   bio.textContent = data.bio;
+
+
 
   return cardDiv;
 }
