@@ -53,3 +53,43 @@ const followersArray = [];
   luishrd
   bigknell
 */
+
+
+axios.get('https://api.github.com/users/Kerri-AnnBates').then((response) => {
+  console.log(response);
+}).catch((err) => {
+  console.log(err);
+});
+
+function createGitHubCard(data) {
+  const cardDiv = document.createElement('div'),
+  infoDiv = document.createElement('div'),
+  nameTitle = document.createElement('h3'),
+  username = document.createElement('p'),
+  location = document.createElement('p'),
+  profile = document.createElement('p'),
+  githubAnchor = document.createElement('a'),
+  followers = document.createElement('p'),
+  following = document.createElement('p'),
+  bio = document.createElement('p'),
+  userImage = document.createElement('img');
+
+  // Set up classes
+  cardDiv.classList.add('card');
+  infoDiv.classList.add('card-info');
+  nameTitle = classList.add('name');
+  username = classList.add('username');
+
+  // Create structure
+  cardDiv.appendChild(userImage);
+  cardDiv.appendChild(infoDiv);
+  infoDiv.appendChild(nameTitle);
+  infoDiv.appendChild(username);
+  infoDiv.appendChild(location);
+  infoDiv.appendChild(profile);
+  infoDiv.appendChild(followers);
+  infoDiv.appendChild(following);
+  infoDiv.appendChild(bio);
+  profile.appendChild(githubAnchor);
+
+}
