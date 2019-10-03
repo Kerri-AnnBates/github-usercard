@@ -92,4 +92,16 @@ function createGitHubCard(data) {
   infoDiv.appendChild(bio);
   profile.appendChild(githubAnchor);
 
+  // Set up content
+  userImage.src = data.avatar_url;
+  nameTitle.textContent = data.name;
+  username.textContent = data.login;
+  location.textContent = data.location;
+  githubAnchor.href = data.url;
+  githubAnchor.textContent = data.url;
+  following.textContent = data.followers;
+  following.textContent = data.following;
+  bio.textContent = data.bio;
+
+  return cardDiv;
 }
