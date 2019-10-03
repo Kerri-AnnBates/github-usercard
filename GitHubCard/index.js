@@ -25,12 +25,12 @@
 */
 
 const followersArray = ['tetondan', 'dustinmyers', 'justsml', 'luishrd', 'bigknell'];
-const cardEntry = document.querySelector('.cards');
-followersArray.forEach(user => {
-  axios.get(`https://api.github.com/users/${user}`).then((response) => {
-    cardEntry.appendChild(createGitHubCard(response.data));
-  });
-});
+// const cardEntry = document.querySelector('.cards');
+// followersArray.forEach(user => {
+//   axios.get(`https://api.github.com/users/${user}`).then((response) => {
+//     cardEntry.appendChild(createGitHubCard(response.data));
+//   });
+// });
 
 /* Step 3: Create a function that accepts a single object as its only argument,
           Using DOM methods and properties, create a component that will return the following DOM element:
@@ -62,15 +62,38 @@ followersArray.forEach(user => {
 
 
 axios.get('https://api.github.com/users/Kerri-AnnBates').then((response) => {
-  console.log(response.data);
 
   const cardEntry = document.querySelector('.cards');
   cardEntry.appendChild(createGitHubCard(response.data));
-
-}).catch((err) => {
+  console.log(response)
+  return getFollowersData(response.data.followers_url);
+})
+.then(response => {
+  response.data.forEach(follower => {
+    useFollowersData(follower.login);
+  });
+})
+.catch((err) => {
   console.log('The data was not found', err);
 });
 
+// Get followes url programmatically
+function getFollowersData(follower_url) {
+  return axios.get(follower_url).then(response => {
+    return response;
+  });
+}
+
+// User followers data to build cards
+function useFollowersData(username) {
+  axios.get(`https://api.github.com/users/${username}`)
+    .then(response => {
+      const cardEntry = document.querySelector('.cards');
+      cardEntry.appendChild(createGitHubCard(response.data));
+    });
+}
+
+// Create github card component
 function createGitHubCard(data) {
   const cardDiv = document.createElement('div'),
   infoDiv = document.createElement('div'),
@@ -90,8 +113,8 @@ function createGitHubCard(data) {
   username.classList.add('username');
 
   const githubAnchor = document.createElement('a');
-  githubAnchor.href = data.url;
-  githubAnchor.textContent = data.url;
+  githubAnchor.href = data.html_url;
+  githubAnchor.textContent = data.html_url;
   profile.textContent = `Profile: `;
   profile.appendChild(githubAnchor);
   
