@@ -104,13 +104,19 @@ function createGitHubCard(data) {
   followers = document.createElement('p'),
   following = document.createElement('p'),
   bio = document.createElement('p'),
-  userImage = document.createElement('img');
+  userImage = document.createElement('img'),
+  button = document.createElement('button'),
+  moreDetails = document.createElement('Div'),
+  moreParagraph = document.createElement('p'),
+  cardContainer = document.createElement('div');
 
   // Set up classes
-  cardDiv.classList.add('card');
+  cardDiv.classList.add('card-parent');
+  cardContainer.classList.add('card');
   infoDiv.classList.add('card-info');
   nameTitle.classList.add('name');
   username.classList.add('username');
+  moreDetails.classList.add('details');
 
   const githubAnchor = document.createElement('a');
   githubAnchor.href = data.html_url;
@@ -119,8 +125,11 @@ function createGitHubCard(data) {
   profile.appendChild(githubAnchor);
   
   // Create structure
-  cardDiv.appendChild(userImage);
-  cardDiv.appendChild(infoDiv);
+  cardDiv.appendChild(cardContainer);
+  cardDiv.appendChild(moreDetails);
+  moreDetails.appendChild(moreParagraph);
+  cardContainer.appendChild(userImage);
+  cardContainer.appendChild(infoDiv);
   infoDiv.appendChild(nameTitle);
   infoDiv.appendChild(username);
   infoDiv.appendChild(location);
@@ -128,6 +137,7 @@ function createGitHubCard(data) {
   infoDiv.appendChild(followers);
   infoDiv.appendChild(following);
   infoDiv.appendChild(bio);
+  infoDiv.appendChild(button);
   
 
   // Set up content
@@ -135,12 +145,15 @@ function createGitHubCard(data) {
   nameTitle.textContent = data.name;
   username.textContent = data.login;
   location.textContent = `Location: ${data.location}`;
-  
+  button.textContent = 'See More';
   following.textContent = `Followers: ${data.followers}`;
   following.textContent = `Following: ${data.following}`;
-  bio.textContent = data.bio;
+  moreParagraph.textContent = data.bio;
 
-
+  button.addEventListener('click', (e) => {
+    e.preventDefault();
+    moreDetails.classList.toggle('show-details');
+  });
 
   return cardDiv;
 }
